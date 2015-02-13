@@ -1,0 +1,53 @@
+menu "PCI host controller drivers"
+	depends on PCI
+
+config PCI_MVEBU
+	bool "Marvell EBU PCIe controller"
+	depends on ARCH_MVEBU || ARCH_DOVE || ARCH_KIRKWOOD
+	depends on OF
+
+config PCIE_DW
+	bool
+
+config PCI_EXYNOS
+	bool "Samsung Exynos PCIe controller"
+	depends on SOC_EXYNOS5440
+	select PCIEPORTBUS
+	select PCIE_DW
+
+config PCI_IMX6
+	bool "Freescale i.MX6 PCIe controller"
+	depends on SOC_IMX6Q
+	select PCIEPORTBUS
+	select PCIE_DW
+
+config EP_MODE_IN_EP_RC_SYS
+	bool "PCI Express EP mode in the IMX6 RC/EP interconnection system"
+	depends on PCI_IMX6
+
+config EP_SELF_IO_TEST
+	bool "PCI Express EP_SELF_IO_TEST in EP mode"
+	depends on EP_MODE_IN_EP_RC_SYS
+
+config RC_MODE_IN_EP_RC_SYS
+	bool "PCI Express RC mode in the IMX6 RC/EP interconnection system"
+	depends on PCI_IMX6
+
+config PCI_IMX_EP_DRV
+	bool "i.MX6 PCI Express EP skeleton driver"
+	depends on RC_MODE_IN_EP_RC_SYS
+	default y
+
+config PCI_TEGRA
+	bool "NVIDIA Tegra PCIe controller"
+	depends on ARCH_TEGRA
+
+config PCI_RCAR_GEN2
+	bool "Renesas R-Car Gen2 Internal PCI controller"
+	depends on ARM && (ARCH_R8A7790 || ARCH_R8A7791 || COMPILE_TEST)
+	help
+	  Say Y here if you want internal PCI support on R-Car Gen2 SoC.
+	  There are 3 internal PCI controllers available with a single
+	  built-in EHCI/OHCI host controller present on each one.
+
+endmenu
